@@ -1,0 +1,97 @@
+All functions except timelapse use the IoTPublish role with the following policies:
+
+1. Managed Policy:
+  AmazonS3ReadOnlyAccess
+
+2. Inline Policy:
+  IoTPublishAllow
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iot:Publish"
+            ],
+            "Resource": [
+                "*"
+            ]
+        }
+    ]
+}
+
+
+3. Inline Policy:
+  LambdaExecution
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "arn:aws:logs:*:*:*"
+        }
+    ]
+}
+
+
+4. Inline Policy:
+  Simple Email Service
+{
+    "Id": "SampleAuthorizationPolicy",
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "Authorize",
+            "Effect": "Allow",
+            "Resource": "*",
+            "Action": [
+                "SES:SendEmail",
+                "SES:SendRawEmail"
+            ]
+        }
+    ]
+}
+
+
+The Timelapse function use the LambdaBasicExecution policy:
+
+Managed Policies
+
+1. AmazonS3FullAccess
+2. AWSXrayFullAccess
+3. AWSLambdaTracerAccessExecutionRole
+{
+    "Version": "2012-10-17",
+    "Statement": {
+        "Effect": "Allow",
+        "Action": [
+            "xray:PutTraceSegments",
+            "xray:PutTelemetryRecords"
+        ],
+        "Resource": [
+            "*"
+        ]
+    }
+}
+
+4. Inline Policy - LambdaExecution:
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "arn:aws:logs:*:*:*"
+        }
+    ]
+}
